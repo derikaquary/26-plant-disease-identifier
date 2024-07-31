@@ -42,7 +42,7 @@ function Page() {
       // Extract cropped image data
       const canvas = cropRef.current.canvas;
       const croppedImage = await new Promise((resolve) => {
-        canvas.toBlob(resolve, "image/jpeg");
+        canvas.toBlob(resolve, "image/jpeg", imageQuality);
       });
 
       setIsLoading(true);
