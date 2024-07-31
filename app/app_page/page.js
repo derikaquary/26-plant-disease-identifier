@@ -35,14 +35,30 @@ function Page() {
         .getContext("2d")
         .drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      const imageBlob = await new Promise((resolve) => {
-        canvas.toBlob(resolve, "image/jpeg");
-      });
-
       // Extract cropped image data
       const canvas = cropRef.current.canvas;
-      const croppedImage = await new Promise((resolve) => {
-        canvas.toBlob(resolve, "image/jpeg", imageQuality);
+      const scaleX = image.naturalWidth / canvas.width;
+      const scaleY = image.naturalHeight / canvas.height;
+      const croppedPixels = ctx.getImageData(
+        crop.x * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY
+      ).data;
+
+      // Convert cropped pixels to image data
+      const croppedImage = new ImageData(
+        croppedPixels,
+        crop.width,
+        crop.height
+      );
+      const croppedCanvas = document.createElement("canvas");
+      croppedCanvas.width = crop.width;
+      croppedCanvas.height = crop.height;
+      croppedCanvas.getContext("2d").putImageData(croppedImage, 0, 0);
+
+      const imageBlob = await new Promise((resolve) => {
+        croppedCanvas.toBlob(resolve, "image/jpeg", imageQuality);
       });
 
       setIsLoading(true);
