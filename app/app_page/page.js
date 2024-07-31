@@ -11,12 +11,10 @@ function Page() {
   const [error, setError] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [facingMode, setFacingMode] = useState("user"); // Default to front camera
   const cropRef = useRef(null);
   const [crop, setCrop] = useState(null);
   const [imageQuality, setImageQuality] = useState(0.8); // Default quality
-  const [targetWidth, setTargetWidth] = useState(300);
-  const [targetHeight, setTargetHeight] = useState(300);
+  const [facingMode, setFacingMode] = useState("user"); // Default to front camera
 
   async function handleCapture() {
     const video = videoRef.current;
@@ -77,8 +75,19 @@ function Page() {
     }
   }
 
-  function handleCameraSwitch() {
-    setFacingMode(facingMode === "user" ? "environment" : "user");
+  async function handleCameraSwitch() {
+    try {
+      const newFacingMode = facingMode === "user" ? "environment" : "user";
+      setFacingMode(newFacingMode);
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: newFacingMode },
+      });
+      videoRef.current.srcObject = stream;
+    } catch (error) {
+      console.error("Error switching camera:", error);
+      setError(error.message);
+    }
   }
 
   function handleRetry() {
