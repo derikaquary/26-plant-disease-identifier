@@ -1,17 +1,21 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
-import { captureAndAnalyzeImage } from "../_lib/actions";
 import ErrorBoundary from "../error";
 import Error from "../error";
+import ReactCrop from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
+import { captureAndAnalyzeImage } from "../_lib/actions";
+
 function Page() {
   const [capturedImage, setCapturedImage] = useState(null);
   const [plantInfo, setPlantInfo] = useState(null);
-
   const [error, setError] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const [facingMode, setFacingMode] = useState("user"); // Default to front camera
+  const [crop, setCrop] = useState(null);
 
   async function handleCapture() {
     const video = videoRef.current;
@@ -50,6 +54,10 @@ function Page() {
     }
   }
 
+  function handleCameraSwitch() {
+    setFacingMode(facingMode === "user" ? "environment" : "user");
+  }
+
   function handleRetry() {
     // Reset component state
     setCapturedImage(null);
@@ -63,15 +71,15 @@ function Page() {
       <div className="flex flex-col w-full bg-green-400 gap-5 items-center justify-center mx-auto">
         <div className="bg-red-400 h-[300px] w-full relative">
           {capturedImage ? (
-            <Image
+            <ReactCrop
               src={capturedImage}
-              alt="Captured Image"
-              layout="fill"
-              objectFit="cover"
+              crop={crop}
+              onChange={(newCrop) => setCrop(newCrop)}
             />
           ) : (
             <video ref={videoRef} autoPlay muted />
           )}
+          <button onClick={handleCameraSwitch}>Switch Camera</button>
         </div>
         <div className="bg-blue-400 h-[300px] w-full">
           {plantInfo ? (
