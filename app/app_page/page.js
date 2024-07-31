@@ -16,21 +16,31 @@ function Page() {
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageBlob = await new Promise((resolve) => {
-      canvas.toBlob(resolve, "image/jpeg");
-    });
-
     try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      await video.play();
+
+      // Wait for one frame to stabilize
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const imageBlob = await new Promise((resolve) => {
+        canvas.toBlob(resolve, 'image/jpeg');
+      });
+
       setIsLoading(true);
       const plantInfo = await captureAndAnalyzeImage(imageBlob);
       setPlantInfo(plantInfo);
       setIsLoading(false);
+
+      // Stop the video stream
+      stream.getTracks().forEach((track) => track.stop());
     } catch (error) {
-      console.error("Error capturing and analyzing image:", error);
+      console.error('Error capturing and analyzing image:', error);
       setError(error.message);
       setIsLoading(false);
     }
@@ -69,9 +79,7 @@ function Page() {
           <p>Waiting for analysis...</p>
         )}
       </div>
-      <button
-        className="bg-purple-400 h-[50px] w-[50px] rounded-full"
-        onClick={handleCapture}>
+      <button className="bg-purple-400 h-[50px] w-[50px] rounded-full" onClick={handleCapture}>
         press
       </button>
     </div>
