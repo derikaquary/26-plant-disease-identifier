@@ -15,6 +15,8 @@ function Page() {
   const cropRef = useRef(null);
   const [crop, setCrop] = useState(null);
   const [imageQuality, setImageQuality] = useState(0.8); // Default quality
+  const [targetWidth, setTargetWidth] = useState(300);
+  const [targetHeight, setTargetHeight] = useState(300);
 
   async function handleCapture() {
     const video = videoRef.current;
