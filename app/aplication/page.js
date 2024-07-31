@@ -1,9 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Image from "next/image";
-import ErrorBoundary from "../error";
-import Error from "../error";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { captureAndAnalyzeImage } from "../_lib/actions";
@@ -15,7 +12,9 @@ function Page() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [facingMode, setFacingMode] = useState("user"); // Default to front camera
+  const cropRef = useRef(null);
   const [crop, setCrop] = useState(null);
+  const [imageQuality, setImageQuality] = useState(0.8); // Default quality
 
   async function handleCapture() {
     const video = videoRef.current;
@@ -37,6 +36,12 @@ function Page() {
         .drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const imageBlob = await new Promise((resolve) => {
+        canvas.toBlob(resolve, "image/jpeg");
+      });
+
+      // Extract cropped image data
+      const canvas = cropRef.current.canvas;
+      const croppedImage = await new Promise((resolve) => {
         canvas.toBlob(resolve, "image/jpeg");
       });
 
@@ -67,43 +72,47 @@ function Page() {
   }
 
   return (
-    <ErrorBoundary fallback={<Error reset={handleRetry} />}>
-      <div className="flex flex-col w-full bg-green-400 gap-5 items-center justify-center mx-auto">
-        <div className="bg-red-400 h-[300px] w-full relative">
-          {capturedImage ? (
-            <ReactCrop
-              src={capturedImage}
-              crop={crop}
-              onChange={(newCrop) => setCrop(newCrop)}
-            />
-          ) : (
-            <video ref={videoRef} autoPlay muted />
-          )}
-          <button onClick={handleCameraSwitch}>Switch Camera</button>
-        </div>
-        <div className="bg-blue-400 h-[300px] w-full">
-          {plantInfo ? (
-            <>
-              <p>Plant name: {plantInfo.name}</p>
-              <p>Issue: {plantInfo.issue}</p>
-              <p>Solution: {plantInfo.solution}</p>
-            </>
-          ) : error ? (
-            <div>
-              <p>Error: {error.message}</p>
-              <button onClick={handleRetry}>Retry</button>
-            </div>
-          ) : (
-            <p>Waiting for analysis...</p>
-          )}
-        </div>
-        <button
-          className="bg-purple-400 h-[50px] w-[100px] rounded-full"
-          onClick={handleCapture}>
-          Capture Image
-        </button>
+    <div className="flex flex-col w-full bg-green-400 gap-5 items-center justify-center mx-auto">
+      <div className="bg-red-400 h-[300px] w-full relative">
+        {capturedImage ? (
+          <ReactCrop
+            src={capturedImage}
+            crop={crop}
+            onChange={(newCrop) => setCrop(newCrop)}
+            ref={cropRef}
+          />
+        ) : (
+          <video ref={videoRef} autoPlay muted />
+        )}
+        <button onClick={handleCameraSwitch}>Switch Camera</button>
       </div>
-    </ErrorBoundary>
+      <div className="flex gap-2">
+        <button onClick={() => setImageQuality(0.5)}>Low</button>
+        <button onClick={() => setImageQuality(0.8)}>Medium</button>
+        <button onClick={() => setImageQuality(1.0)}>High</button>
+      </div>
+      <div className="bg-blue-400 h-[300px] w-full">
+        {plantInfo ? (
+          <>
+            <p>Plant name: {plantInfo.name}</p>
+            <p>Issue: {plantInfo.issue}</p>
+            <p>Solution: {plantInfo.solution}</p>
+          </>
+        ) : error ? (
+          <div>
+            <p>Error: {error.message}</p>
+            <button onClick={handleRetry}>Retry</button>
+          </div>
+        ) : (
+          <p>Waiting for analysis...</p>
+        )}
+      </div>
+      <button
+        className="bg-purple-400 h-[50px] w-[100px] rounded-full"
+        onClick={handleCapture}>
+        Capture Image
+      </button>
+    </div>
   );
 }
 
