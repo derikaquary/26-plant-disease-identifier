@@ -126,13 +126,8 @@ const PlantAnalyzer = () => {
   return (
     <div className="flex flex-col w-full bg-green-400 gap-3 items-center justify-center mx-auto">
       <div
-        className="bg-red-400 h-[300px] w-full relative flex items-center justify-center"
+        className="bg-red-400 h-[300px] w-full relative flex flex-col items-center justify-center"
         onClick={openCamera}>
-        {!stream && !capturedImage && (
-          <p className="text-2xl absolute text-center ">
-            Tap here to open the camera
-          </p>
-        )}
         {capturedImage ? (
           <Image
             src={capturedImage}
@@ -142,6 +137,9 @@ const PlantAnalyzer = () => {
           />
         ) : (
           <video ref={videoRef} autoPlay muted />
+        )}
+        {!stream && !capturedImage && (
+          <p className="text-2xl ">Tap here to open the camera</p>
         )}
         {error && <p>Error: {error}</p>}
       </div>
