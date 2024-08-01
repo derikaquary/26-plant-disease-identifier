@@ -102,14 +102,15 @@ const PlantAnalyzer = () => {
       <div
         className="bg-red-400 h-[300px] w-full relative"
         onClick={handleCapture}>
-        <video ref={videoRef} autoPlay muted />
-        {capturedImage && (
+        {capturedImage ? (
           <Image
             src={capturedImage}
             alt="Captured plant"
             width={capturedImageSize?.width || 300}
             height={capturedImageSize?.height || 300}
           />
+        ) : (
+          <video ref={videoRef} autoPlay muted />
         )}
         {error && <p>Error: {error}</p>}
       </div>
