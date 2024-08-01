@@ -1,4 +1,4 @@
-const express = require('express');
+/* const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
@@ -38,3 +38,4 @@ app.post('/upload', upload.single('image'), (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+ */

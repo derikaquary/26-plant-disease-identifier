@@ -1,4 +1,4 @@
-"use server";
+/* "use server";
 
 import { getPlantInfo } from "./data-service";
 
@@ -30,3 +30,4 @@ export async function captureAndAnalyzeImage(imageData) {
   }
 }
 
+ */

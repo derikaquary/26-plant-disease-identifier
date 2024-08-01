@@ -1,4 +1,4 @@
-import axios from "axios";
+/* import axios from "axios";
 
 const baseUrl = "http://localhost:3000"; // Replace with your backend API endpoint
 
@@ -18,3 +18,4 @@ export async function getPlantInfo(imageData) {
     throw error; // Rethrow the error for handling in the calling component
   }
 }
+ */
