@@ -10,7 +10,7 @@ import Base64 from "base64-js";
 import MarkdownIt from "markdown-it";
 import Image from "next/image";
 
-const API_KEY = "AIzaSyDg_owD1CxZqN__Q_GxetUf4KnzuhlYfgw"; // Replace with your Gemini API key
+const API_KEY = process.env.GEMINI_API_KEY; // Replace with your Gemini API key
 
 function PlantAnalyzer() {
   const [capturedImage, setCapturedImage] = useState(null);
