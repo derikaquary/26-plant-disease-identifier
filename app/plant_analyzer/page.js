@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import {
   GoogleGenerativeAI,
   HarmBlockThreshold,
@@ -15,21 +15,39 @@ const PlantAnalyzer = () => {
   const [capturedImageSize, setCapturedImageSize] = useState(null);
   const [plantInfo, setPlantInfo] = useState(null);
   const [error, setError] = useState(null);
+  const [stream, setStream] = useState(null);
   const videoRef = useRef(null);
 
-  const API_KEY = "AIzaSyDg_owD1CxZqN__Q_GxetUf4KnzuhlYfgw";
+  const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+
+  async function openCamera() {
+    const video = videoRef.current;
+    let localStream;
+
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" },
+      });
+      video.srcObject = localStream;
+      await video.play();
+      setStream(localStream);
+    } catch (error) {
+      console.error("Error accessing video stream:", error);
+      setError(`Access Error: ${error.message}`);
+    }
+  }
+
+  async function closeCamera() {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+  }
 
   const handleCapture = async () => {
     const video = videoRef.current;
-    let stream;
 
     try {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
-      });
-      video.srcObject = stream;
-      await video.play();
-
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       const canvas = document.createElement("canvas");
@@ -93,15 +111,28 @@ const PlantAnalyzer = () => {
     } finally {
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
+        setStream(null);
       }
     }
   };
 
+  const handleRetake = async () => {
+    setCapturedImage(null);
+    setPlantInfo(null);
+    setError(null);
+    openCamera();
+  };
+
   return (
-    <div className="flex flex-col w-full bg-green-400 gap-5 items-center justify-center mx-auto">
+    <div className="flex flex-col w-full bg-green-400 gap-3 items-center justify-center mx-auto">
       <div
-        className="bg-red-400 h-[300px] w-full relative"
-        onClick={handleCapture}>
+        className="bg-red-400 h-[300px] w-full relative flex items-center justify-center"
+        onClick={openCamera}>
+        {!stream && !capturedImage && (
+          <p className="text-2xl absolute text-center ">
+            Tap here to open the camera
+          </p>
+        )}
         {capturedImage ? (
           <Image
             src={capturedImage}
@@ -114,13 +145,31 @@ const PlantAnalyzer = () => {
         )}
         {error && <p>Error: {error}</p>}
       </div>
-      <div className="bg-blue-400 h-[300px] w-full">
+      <button
+        className="bg-black text-white py-2 px-4 rounded mb-3"
+        onClick={closeCamera}
+        disabled={!stream}>
+        Close Camera
+      </button>
+      <div className="bg-blue-400 h-[270px] w-full">
         {plantInfo ? (
           <div dangerouslySetInnerHTML={{ __html: plantInfo }} />
         ) : (
           <p>Waiting for analysis...</p>
         )}
       </div>
+      <button
+        className="bg-yellow-400 py-2 px-4 rounded mb-3"
+        onClick={handleRetake}
+        disabled={!capturedImage}>
+        Take Another Picture
+      </button>
+      <button
+        className="bg-purple-600 text-white py-2 px-4 rounded mb-3"
+        onClick={handleCapture}
+        disabled={!stream}>
+        Click Here to Capture Image
+      </button>
     </div>
   );
 };
