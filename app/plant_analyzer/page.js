@@ -1,3 +1,4 @@
+"use client";
 // components/PlantAnalyzer.js
 
 import { useState, useRef } from "react";
