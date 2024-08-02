@@ -143,12 +143,22 @@ const PlantAnalyzer = () => {
         )}
         {error && <p>Error: {error}</p>}
       </div>
-      <button
-        className="bg-black text-white py-2 px-4 rounded mb-3"
-        onClick={closeCamera}
-        disabled={!stream}>
-        Close Camera
-      </button>
+      {stream && (
+        <button
+          className="bg-black text-white py-2 px-4 rounded mb-3"
+          onClick={closeCamera}
+          disabled={!stream}>
+          Close Camera
+        </button>
+      )}
+      {!stream && (
+        <button
+          className="bg-black text-white py-2 px-4 rounded mb-3"
+          disabled={stream}
+          onClick={openCamera}>
+          open Camera
+        </button>
+      )}
       <div className="bg-blue-400 h-[270px] w-full">
         {plantInfo ? (
           <div dangerouslySetInnerHTML={{ __html: plantInfo }} />
