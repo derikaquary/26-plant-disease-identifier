@@ -22,10 +22,13 @@ const PlantAnalyzer = () => {
 
   async function openCamera() {
     const video = videoRef.current;
-    let localStream;
+    if (!video) {
+      setError("Camera element not found. Please try again.");
+      return;
+    }
 
     try {
-      localStream = await navigator.mediaDevices.getUserMedia({
+      const localStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
       });
       video.srcObject = localStream;
@@ -46,6 +49,11 @@ const PlantAnalyzer = () => {
 
   const handleCapture = async () => {
     const video = videoRef.current;
+
+    if (!video) {
+      setError("Video element not found. Please try again.");
+      return;
+    }
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -109,18 +117,19 @@ const PlantAnalyzer = () => {
       console.error("Error capturing video stream:", error);
       setError(`Capture Error: ${error.message}`);
     } finally {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-        setStream(null);
-      }
+      closeCamera();
     }
   };
 
   const handleRetake = async () => {
     setCapturedImage(null);
+    setCapturedImageSize(null);
     setPlantInfo(null);
     setError(null);
-    openCamera();
+
+    setTimeout(() => {
+      openCamera();
+    }, 100);
   };
 
   return (
@@ -154,9 +163,8 @@ const PlantAnalyzer = () => {
       {!stream && (
         <button
           className="bg-black text-white py-2 px-4 rounded mb-3"
-          disabled={stream}
           onClick={openCamera}>
-          open Camera
+          Open Camera
         </button>
       )}
       <div className="bg-blue-400 h-[270px] w-full">
