@@ -147,9 +147,7 @@ const PlantAnalyzer = () => {
         ) : (
           <video ref={videoRef} autoPlay muted />
         )}
-        {!stream && !capturedImage && (
-          <p className="text-2xl ">Tap here to open the camera</p>
-        )}
+
         {error && <p>Error: {error}</p>}
       </div>
       {stream && (
