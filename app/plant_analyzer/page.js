@@ -121,7 +121,7 @@ function PlantAnalyzer() {
     }
   }
 
-  const handleRetake = async () => {
+  async function handleRetake() {
     setCapturedImage(null);
     setCapturedImageSize(null);
     setPlantInfo(null);
@@ -130,7 +130,7 @@ function PlantAnalyzer() {
     setTimeout(() => {
       openCamera();
     }, 100);
-  };
+  }
 
   return (
     <div className="flex flex-col w-full bg-green-400 gap-3 items-center justify-center mx-auto">
