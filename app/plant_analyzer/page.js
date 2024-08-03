@@ -153,7 +153,9 @@ function PlantAnalyzer() {
           />
         ) : (
           <video
-            className="rounded-xl h-[150px] w-[260px] object-cover "
+            className={`${
+              !stream ? "hidden" : " "
+            } rounded-xl h-[150px] w-[260px] object-cover`}
             ref={videoRef}
             autoPlay
             muted
