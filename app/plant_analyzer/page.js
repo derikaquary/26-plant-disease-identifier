@@ -9,6 +9,7 @@ import {
 import Base64 from "base64-js";
 import MarkdownIt from "markdown-it";
 import Image from "next/image";
+import { CiCamera } from "react-icons/ci";
 
 function PlantAnalyzer() {
   const [capturedImage, setCapturedImage] = useState(null);
@@ -133,10 +134,11 @@ function PlantAnalyzer() {
   }
 
   return (
-    <div className="flex flex-col w-full bg-green-400 gap-3 items-center justify-center mx-auto">
+    <div className="flex flex-col w-full gap-3 items-center justify-center mx-auto">
       <div
-        className="bg-red-400 h-[300px] w-full relative flex flex-col items-center justify-center"
+        className="rounded-xl h-[180px] w-full relative flex flex-col items-center justify-center"
         onClick={openCamera}>
+        {!capturedImage && <CiCamera />}
         {capturedImage ? (
           <Image
             src={capturedImage}
@@ -165,7 +167,7 @@ function PlantAnalyzer() {
           Open Camera
         </button>
       )}
-      <div className="bg-blue-400 h-[270px] w-full">
+      <div className="bg-blue-400 h-[150px] w-full">
         {plantInfo ? (
           <div dangerouslySetInnerHTML={{ __html: plantInfo }} />
         ) : (
