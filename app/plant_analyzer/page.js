@@ -13,6 +13,7 @@ import { CiCamera } from "react-icons/ci";
 import { IoRadioButtonOnOutline } from "react-icons/io5";
 import { FiCameraOff } from "react-icons/fi";
 import { IoRefreshCircleOutline } from "react-icons/io5";
+import Spinner from "../_components/Spinner";
 
 function PlantAnalyzer() {
   const [capturedImage, setCapturedImage] = useState(null);
@@ -186,9 +187,7 @@ function PlantAnalyzer() {
       )}
       <div className="h-[250px] bg-white/40 w-full overflow-auto px-2 flex flex-col items-center justify-center">
         {loading ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gray-900"></div>
-          </div>
+          <Spinner />
         ) : plantInfo ? (
           <div dangerouslySetInnerHTML={{ __html: plantInfo }} />
         ) : (
