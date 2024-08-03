@@ -148,8 +148,8 @@ function PlantAnalyzer() {
           <Image
             src={capturedImage}
             alt="Captured plant"
-            width={capturedImageSize?.width || 300}
-            height={capturedImageSize?.height || 300}
+            width={capturedImageSize?.width || 260}
+            height={capturedImageSize?.height || 150}
           />
         ) : (
           <video
