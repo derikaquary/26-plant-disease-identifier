@@ -10,7 +10,7 @@ import Base64 from "base64-js";
 import MarkdownIt from "markdown-it";
 import Image from "next/image";
 
-const PlantAnalyzer = () => {
+function PlantAnalyzer() {
   const [capturedImage, setCapturedImage] = useState(null);
   const [capturedImageSize, setCapturedImageSize] = useState(null);
   const [plantInfo, setPlantInfo] = useState(null);
@@ -30,7 +30,7 @@ const PlantAnalyzer = () => {
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
-      });
+      }); //open the user camera
       video.srcObject = localStream;
       await video.play();
       setStream(localStream);
@@ -47,7 +47,7 @@ const PlantAnalyzer = () => {
     }
   }
 
-  const handleCapture = async () => {
+  async function handleCapture() {
     const video = videoRef.current;
 
     if (!video) {
@@ -62,10 +62,10 @@ const PlantAnalyzer = () => {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const context = canvas.getContext("2d");
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      context.drawImage(video, 0, 0, canvas.width, canvas.height); //This line is the core of capturing the video frame as an image and put it to the canvas element
 
       const imageBlob = await new Promise((resolve) => {
-        canvas.toBlob(resolve, "image/jpeg");
+        canvas.toBlob(resolve, "image/jpeg"); //The canvas content is converted into an image Blob using canvas.toBlob()
       });
 
       setCapturedImage(URL.createObjectURL(imageBlob));
@@ -75,7 +75,7 @@ const PlantAnalyzer = () => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result.split(",")[1]);
         reader.readAsDataURL(imageBlob);
-      });
+      }); //captured image as an imageBlob is converted to a data URL and base64 encoded for sending to the API.
 
       const contents = [
         {
@@ -83,8 +83,8 @@ const PlantAnalyzer = () => {
           parts: [
             { inline_data: { mime_type: "image/jpeg", data: imageBase64 } },
             {
-              text: "Analyze this plant and provide its name, potential issues, and solutions.",
-            },
+              text: "Analyze this plant and provide its name, potential issues, and solutions. At the end, provide a tag saying: use the info with caution",
+            }, //A user prompt describing what to analyze
           ],
         },
       ];
@@ -101,7 +101,7 @@ const PlantAnalyzer = () => {
       });
 
       try {
-        const result = await model.generateContentStream({ contents });
+        const result = await model.generateContentStream({ contents }); //The user prompt and image data are sent to the model
 
         let buffer = [];
         let md = new MarkdownIt();
@@ -119,7 +119,7 @@ const PlantAnalyzer = () => {
     } finally {
       closeCamera();
     }
-  };
+  }
 
   const handleRetake = async () => {
     setCapturedImage(null);
@@ -186,6 +186,6 @@ const PlantAnalyzer = () => {
       </button>
     </div>
   );
-};
+}
 
 export default PlantAnalyzer;
