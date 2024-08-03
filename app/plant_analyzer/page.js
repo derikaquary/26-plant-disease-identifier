@@ -142,7 +142,7 @@ function PlantAnalyzer() {
   return (
     <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center ">
       <div
-        className=" rounded-xl h-[full] w-full relative flex flex-col items-center "
+        className=" rounded-xl h-[150px] w-[260px] relative flex flex-col items-center "
         onClick={openCamera}>
         {capturedImage ? (
           <Image
