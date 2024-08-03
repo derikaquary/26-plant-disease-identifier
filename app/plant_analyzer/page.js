@@ -20,6 +20,7 @@ function PlantAnalyzer() {
   const [plantInfo, setPlantInfo] = useState(null);
   const [error, setError] = useState(null);
   const [stream, setStream] = useState(null);
+  const [loading, setLoading] = useState(false);
   const videoRef = useRef(null);
 
   const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
@@ -106,6 +107,7 @@ function PlantAnalyzer() {
       });
 
       try {
+        setLoading(true);
         const result = await model.generateContentStream({ contents }); //The user prompt and image data are sent to the model
 
         let buffer = [];
@@ -117,6 +119,8 @@ function PlantAnalyzer() {
       } catch (apiError) {
         console.error("Error analyzing image:", apiError);
         setError(`API Error: ${apiError.message}`);
+      } finally {
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error capturing video stream:", error);
@@ -142,7 +146,7 @@ function PlantAnalyzer() {
   return (
     <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center ">
       <div
-        className=" rounded-xl h-[170px] w-full relative flex flex-col items-center "
+        className="rounded-xl h-[170px] w-full relative flex flex-col items-center mt-2"
         onClick={openCamera}>
         {capturedImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -163,11 +167,11 @@ function PlantAnalyzer() {
           />
         )}
 
-        {error && <p>Error: {error}</p>}
+        {error && <p className="text-red-500 mt-2">Error: {error}</p>}
       </div>
       {stream && (
         <button
-          className="border-[4px] border-white  rounded-full px-2 py-2 "
+          className="border-[4px] border-white rounded-full px-2 py-2"
           onClick={closeCamera}
           disabled={!stream && capturedImage}>
           <FiCameraOff color="white" size={30} />
@@ -175,17 +179,26 @@ function PlantAnalyzer() {
       )}
       {!stream && (
         <button
-          className="border-[4px] border-white  rounded-full px-2 py-2"
+          className="border-[4px] border-white rounded-full px-2 py-2"
           onClick={openCamera}>
           <CiCamera color="white" size={30} />
         </button>
       )}
-      <div className="h-[250px] bg-white/40 w-full overflow-auto px-2">
-        {plantInfo ? (
+      <div className="h-[250px] bg-white/40 w-full overflow-auto px-2 flex flex-col items-center justify-center">
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gray-900"></div>
+          </div>
+        ) : plantInfo ? (
           <div dangerouslySetInnerHTML={{ __html: plantInfo }} />
         ) : (
           <p className="font-semibold text-2xl">
             Tap the camera icon above to open the camera...
+          </p>
+        )}
+        {error && (
+          <p className="text-red-500 mt-2">
+            Unable to generate response: {error}
           </p>
         )}
       </div>
