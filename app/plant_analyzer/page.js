@@ -10,6 +10,9 @@ import Base64 from "base64-js";
 import MarkdownIt from "markdown-it";
 import Image from "next/image";
 import { CiCamera } from "react-icons/ci";
+import { IoRadioButtonOnOutline } from "react-icons/io5";
+import { FiCameraOff } from "react-icons/fi";
+import { IoRefreshCircleOutline } from "react-icons/io5";
 
 function PlantAnalyzer() {
   const [capturedImage, setCapturedImage] = useState(null);
@@ -45,6 +48,7 @@ function PlantAnalyzer() {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
+      videoRef.current.src = "";
     }
   }
 
@@ -118,7 +122,9 @@ function PlantAnalyzer() {
       console.error("Error capturing video stream:", error);
       setError(`Capture Error: ${error.message}`);
     } finally {
-      closeCamera();
+      if (videoRef.current && stream) {
+        closeCamera();
+      }
     }
   }
 
@@ -134,11 +140,10 @@ function PlantAnalyzer() {
   }
 
   return (
-    <div className="flex flex-col w-full gap-3 items-center justify-center mx-auto">
+    <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-4 justify-center items-center ">
       <div
-        className="rounded-xl h-[180px] w-full relative flex flex-col items-center justify-center"
+        className=" rounded-xl h-[180px] w-full relative flex flex-col items-center justify-center mb-3"
         onClick={openCamera}>
-        {!capturedImage && <CiCamera />}
         {capturedImage ? (
           <Image
             src={capturedImage}
@@ -154,37 +159,33 @@ function PlantAnalyzer() {
       </div>
       {stream && (
         <button
-          className="bg-black text-white py-2 px-4 rounded mb-3"
+          className="border-[4px] border-white  rounded-full px-2 py-2 "
           onClick={closeCamera}
-          disabled={!stream}>
-          Close Camera
+          disabled={!stream && capturedImage}>
+          <FiCameraOff color="white" size={30} />
         </button>
       )}
       {!stream && (
         <button
-          className="bg-black text-white py-2 px-4 rounded mb-3"
+          className="border-[4px] border-white  rounded-full px-2 py-2"
           onClick={openCamera}>
-          Open Camera
+          <CiCamera color="white" size={30} />
         </button>
       )}
-      <div className="bg-blue-400 h-[150px] w-full">
+      <div className="h-[250px] bg-white/40 w-full overflow-auto px-2">
         {plantInfo ? (
           <div dangerouslySetInnerHTML={{ __html: plantInfo }} />
         ) : (
-          <p>Waiting for analysis...</p>
+          <p className="font-semibold text-2xl">
+            Tap the camera icon above to open the camera...
+          </p>
         )}
       </div>
-      <button
-        className="bg-yellow-400 py-2 px-4 rounded mb-3"
-        onClick={handleRetake}
-        disabled={!capturedImage}>
-        Take Another Picture
+      <button onClick={handleRetake} disabled={!capturedImage}>
+        <IoRefreshCircleOutline size={60} color="white" />
       </button>
-      <button
-        className="bg-purple-600 text-white py-2 px-4 rounded mb-3"
-        onClick={handleCapture}
-        disabled={!stream}>
-        Click Here to Capture Image
+      <button onClick={handleCapture} disabled={!stream}>
+        <IoRadioButtonOnOutline color="white" size={80} />
       </button>
     </div>
   );
