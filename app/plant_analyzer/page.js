@@ -186,7 +186,7 @@ function PlantAnalyzer() {
           <CiCamera color="white" size={30} />
         </button>
       )}
-      <div className="h-[250px] bg-black/10 backdrop-blur-xl w-full flex flex-col items-center justify-center shadow-md">
+      <div className="h-[250px] bg-black/10 backdrop-blur-xl w-full flex flex-col items-center justify-center shadow-md px-3">
         {loading ? (
           <Spinner />
         ) : plantInfo ? (
