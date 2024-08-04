@@ -30,7 +30,7 @@ function PlantAnalyzer() {
   async function openCamera() {
     const video = videoRef.current;
     if (!video) {
-      setError("Camera element not found. Please try again.");
+      setError("Please tap the reset button.");
       return;
     }
 
@@ -59,7 +59,7 @@ function PlantAnalyzer() {
     const video = videoRef.current;
 
     if (!video) {
-      setError("Video element not found. Please try again.");
+      setError("Video element not found. Please tap the reset button.");
       return;
     }
 
@@ -170,8 +170,6 @@ function PlantAnalyzer() {
             style={{ objectFit: "cover" }}
           />
         )}
-
-        {error && <p className="text-red-500 mt-2">Error: {error}</p>}
       </div>
       {stream && (
         <button
@@ -203,7 +201,7 @@ function PlantAnalyzer() {
           </p>
         )}
         {error && (
-          <p className="text-red-500 mt-2">
+          <p className="text-red-500 mt-2 px-2">
             Unable to generate response: {error}
           </p>
         )}
