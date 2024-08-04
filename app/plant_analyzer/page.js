@@ -91,7 +91,7 @@ function PlantAnalyzer() {
           parts: [
             { inline_data: { mime_type: "image/jpeg", data: imageBase64 } },
             {
-              text: "Analyze this plant and provide its name, potential issues, and solutions. At the end, provide a tag saying: use the info with caution",
+              text: "Analyze this plant and provide its name, potential issues, and solutions. The solution mus be precise, if there is a lack of nutritions, the nutritions must be mentioned. At the end, provide a tag saying: use the info with caution",
             }, //A user prompt describing what to analyze
           ],
         },
