@@ -1,6 +1,7 @@
 import { Playfair_Display } from "next/font/google";
 import "./_style/globals.css";
 import Image from "next/image";
+import Head from "next/head"; // Import Head component
 import background from "@/public/background.jpg";
 
 const playfair = Playfair_Display({
@@ -10,13 +11,20 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: "Plant desease identifier",
+  title: "Plant disease identifier",
   description: "Generate info about plant condition",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <Head>
+        {/* Add your AdSense script here */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5933734292382802"
+          crossOrigin="anonymous"></script>
+      </Head>
       <body className={`${playfair.className} relative min-h-screen`}>
         <div className="absolute inset-0">
           <Image
