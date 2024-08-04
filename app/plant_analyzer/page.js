@@ -195,9 +195,9 @@ function PlantAnalyzer() {
             dangerouslySetInnerHTML={{ __html: plantInfo }}
           />
         ) : (
-          <p className="text-[30px] text-white ">
-            Tap the camera icon above to open the camera, if error tap
-            refresh...
+          <p className="text-[20px] text-white ">
+            Tap the camera icon above to open the camera, if error tap refresh.
+            Then start identify your plant disease...
           </p>
         )}
         {error && (
