@@ -14,6 +14,7 @@ import { IoRadioButtonOnOutline } from "react-icons/io5";
 import { FiCameraOff } from "react-icons/fi";
 import { IoRefreshCircleOutline } from "react-icons/io5";
 import Spinner from "../_components/Spinner";
+import Navigation from "../_components/Navigation";
 
 function PlantAnalyzer() {
   const [capturedImage, setCapturedImage] = useState(null);
@@ -185,13 +186,13 @@ function PlantAnalyzer() {
           <CiCamera color="white" size={30} />
         </button>
       )}
-      <div className="h-[250px] bg-white/40 w-full overflow-auto px-2 flex flex-col items-center justify-center">
+      <div className="h-[250px] bg-white/10 backdrop-blur-xl w-full overflow-auto px-2 flex flex-col items-center justify-center shadow-md">
         {loading ? (
           <Spinner />
         ) : plantInfo ? (
           <div dangerouslySetInnerHTML={{ __html: plantInfo }} />
         ) : (
-          <p className="font-semibold text-2xl">
+          <p className="text-[30px] text-white">
             Tap the camera icon above to open the camera...
           </p>
         )}
@@ -207,6 +208,7 @@ function PlantAnalyzer() {
       <button onClick={handleCapture} disabled={!stream}>
         <IoRadioButtonOnOutline color="white" size={80} />
       </button>
+      <Navigation />
     </div>
   );
 }
