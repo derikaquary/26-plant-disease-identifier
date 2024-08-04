@@ -91,7 +91,7 @@ function PlantAnalyzer() {
           parts: [
             { inline_data: { mime_type: "image/jpeg", data: imageBase64 } },
             {
-              text: "Analyze this plant and provide its name, potential issues, and solutions. The solution must be precise, if there is a lack of nutritions, the nutritions must be mentioned. Do not ask back to the user, this is a one way app. If not sure, just guest, use your best prediction. At the end, provide a tag saying: use the info with caution",
+              text: "Analyze this plant and provide its name, potential issues, and solutions. The solution must be precise, if there is a lack of nutritions, the nutritions must be mentioned, which mineral is lacking. Be spesific, do not try to say it is not possible to determine, just give your best guest. Do not ask back to the user, this is a one way app. At the end, provide a tag saying: use the info with caution",
             },
           ],
         },
