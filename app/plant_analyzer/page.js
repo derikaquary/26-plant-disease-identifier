@@ -142,9 +142,9 @@ function PlantAnalyzer() {
     setPlantInfo(null);
     setError(null);
 
-    setTimeout(() => {
-      openCamera();
-    }, 100);
+    // Add a delay before opening the camera again
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    openCamera();
   }
 
   return (
