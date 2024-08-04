@@ -37,7 +37,7 @@ function PlantAnalyzer() {
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
-      }); //open the user camera
+      });
       video.srcObject = localStream;
       await video.play();
       setStream(localStream);
@@ -70,10 +70,10 @@ function PlantAnalyzer() {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const context = canvas.getContext("2d");
-      context.drawImage(video, 0, 0, canvas.width, canvas.height); //This line is the core of capturing the video frame as an image and put it to the canvas element
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const imageBlob = await new Promise((resolve) => {
-        canvas.toBlob(resolve, "image/jpeg"); //The canvas content is converted into an image Blob using canvas.toBlob()
+        canvas.toBlob(resolve, "image/jpeg");
       });
 
       setCapturedImage(URL.createObjectURL(imageBlob));
@@ -83,7 +83,7 @@ function PlantAnalyzer() {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result.split(",")[1]);
         reader.readAsDataURL(imageBlob);
-      }); //captured image as an imageBlob is converted to a data URL and base64 encoded for sending to the API.
+      });
 
       const contents = [
         {
@@ -91,8 +91,8 @@ function PlantAnalyzer() {
           parts: [
             { inline_data: { mime_type: "image/jpeg", data: imageBase64 } },
             {
-              text: "Analyze this plant and provide its name, potential issues, and solutions. The solution mus be precise, if there is a lack of nutritions, the nutritions must be mentioned. At the end, provide a tag saying: use the info with caution",
-            }, //A user prompt describing what to analyze
+              text: "Analyze this plant and provide its name, potential issues, and solutions. The solution must be precise, if there is a lack of nutritions, the nutritions must be mentioned. Do not ask back to the user, this is a one way app. If not sure, just guest, use your best prediction. At the end, provide a tag saying: use the info with caution",
+            },
           ],
         },
       ];
@@ -110,7 +110,7 @@ function PlantAnalyzer() {
 
       try {
         setLoading(true);
-        const result = await model.generateContentStream({ contents }); //The user prompt and image data are sent to the model
+        const result = await model.generateContentStream({ contents });
 
         let buffer = [];
         let md = new MarkdownIt();
@@ -146,7 +146,7 @@ function PlantAnalyzer() {
   }
 
   return (
-    <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center ">
+    <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center">
       <div
         className="rounded-xl h-[170px] w-full relative flex flex-col items-center mt-2"
         onClick={openCamera}>
@@ -191,11 +191,11 @@ function PlantAnalyzer() {
           <Spinner />
         ) : plantInfo ? (
           <div
-            className="text-[20px] text-white"
+            className="text-[20px] text-white w-full"
             dangerouslySetInnerHTML={{ __html: plantInfo }}
           />
         ) : (
-          <p className="text-[30px] text-white">
+          <p className="text-[30px] text-white text-center">
             Tap the camera icon above to open the camera, if error tap
             refresh...
           </p>
