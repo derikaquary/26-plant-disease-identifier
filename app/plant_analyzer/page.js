@@ -186,16 +186,16 @@ function PlantAnalyzer() {
           <CiCamera color="white" size={30} />
         </button>
       )}
-      <div className="h-[250px] bg-black/10 backdrop-blur-xl w-full overflow-auto px-2 py-2 flex flex-col items-center justify-center shadow-md">
+      <div className="h-[250px] bg-black/10 backdrop-blur-xl w-full flex flex-col items-center justify-center shadow-md">
         {loading ? (
           <Spinner />
         ) : plantInfo ? (
           <div
-            className="text-[20px] text-white w-full"
+            className="text-[20px] text-white w-full overflow-auto px-2"
             dangerouslySetInnerHTML={{ __html: plantInfo }}
           />
         ) : (
-          <p className="text-[30px] text-white text-center">
+          <p className="text-[30px] text-white ">
             Tap the camera icon above to open the camera, if error tap
             refresh...
           </p>
