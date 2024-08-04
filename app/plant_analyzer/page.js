@@ -196,7 +196,8 @@ function PlantAnalyzer() {
           />
         ) : (
           <p className="text-[30px] text-white">
-            Tap the camera icon above to open the camera if error tap refresh...
+            Tap the camera icon above to open the camera, if error tap
+            refresh...
           </p>
         )}
         {error && (
