@@ -190,7 +190,10 @@ function PlantAnalyzer() {
         {loading ? (
           <Spinner />
         ) : plantInfo ? (
-          <div dangerouslySetInnerHTML={{ __html: plantInfo }} />
+          <div
+            className="text-[20px] text-white"
+            dangerouslySetInnerHTML={{ __html: plantInfo }}
+          />
         ) : (
           <p className="text-[30px] text-white">
             Tap the camera icon above to open the camera...
