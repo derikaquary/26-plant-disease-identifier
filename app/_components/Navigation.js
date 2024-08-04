@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { PiDotsThreeCircleVerticalThin } from "react-icons/pi";
 import { MdHome } from "react-icons/md";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaLeaf } from "react-icons/fa";
@@ -46,7 +46,7 @@ function Navigation() {
           </Link>
         </div>
       )}
-      <BsThreeDotsVertical
+      <PiDotsThreeCircleVerticalThin
         onClick={() => setIsOpen(!isOpen)}
         size={30}
         color="white"
