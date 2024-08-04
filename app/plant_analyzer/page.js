@@ -120,7 +120,9 @@ function PlantAnalyzer() {
         }
       } catch (apiError) {
         console.error("Error analyzing image:", apiError);
-        setError(`API Error: ${apiError.message}`);
+        setPlantInfo(
+          `<p class="text-red-500">Something went wrong. Please tap the reset button and try again.</p>`
+        );
       } finally {
         setLoading(false);
       }
