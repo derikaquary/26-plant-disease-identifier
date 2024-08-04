@@ -35,11 +35,11 @@ function Navigation() {
       className="absolute bottom-5 right-5 flex flex-col items-end gap-[5px]">
       {isOpen && (
         <div className="rounded-xl bg-white/20 backdrop-blur-md w-[50px] flex flex-col gap-3 items-center justify-center px-3 py-3">
-          <Link href="/plant_analyzer">
-            <FaLeaf color="white" size={40} />
-          </Link>
           <Link href="/">
             <MdHome color="white" size={40} />
+          </Link>
+          <Link href="/plant_analyzer">
+            <FaLeaf color="white" size={40} />
           </Link>
           <Link href="/about">
             <FaInfoCircle color="white" size={40} />
