@@ -13,6 +13,7 @@ import { CiCamera } from "react-icons/ci";
 import { IoRadioButtonOnOutline } from "react-icons/io5";
 import { FiCameraOff } from "react-icons/fi";
 import { IoRefreshCircleOutline } from "react-icons/io5";
+import { MdOutlineZoomInMap } from "react-icons/md";
 import Spinner from "../_components/Spinner";
 import Navigation from "../_components/Navigation";
 
@@ -23,6 +24,7 @@ function PlantAnalyzer() {
   const [error, setError] = useState(null);
   const [stream, setStream] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [zoom, setZoom] = useState(1);
   const videoRef = useRef(null);
 
   const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
@@ -70,7 +72,23 @@ function PlantAnalyzer() {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const context = canvas.getContext("2d");
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const scaledWidth = video.videoWidth / zoom;
+      const scaledHeight = video.videoHeight / zoom;
+      const offsetX = (video.videoWidth - scaledWidth) / 2;
+      const offsetY = (video.videoHeight - scaledHeight) / 2;
+
+      context.drawImage(
+        video,
+        offsetX,
+        offsetY,
+        scaledWidth,
+        scaledHeight,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
 
       const imageBlob = await new Promise((resolve) => {
         canvas.toBlob(resolve, "image/jpeg");
@@ -147,37 +165,54 @@ function PlantAnalyzer() {
     openCamera();
   }
 
+  const handleZoomChange = (event) => {
+    setZoom(event.target.value);
+  };
+
   return (
     <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center">
-      <div
-        className="rounded-xl h-[170px] w-full relative flex flex-col items-center mt-2"
-        onClick={openCamera}>
+      <div className="relative w-[260px] h-[150px] overflow-hidden rounded-xl mt-2">
         {capturedImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={capturedImage}
             alt="Captured plant"
-            className="rounded-xl h-[150px] w-[260px] object-cover"
+            className="rounded-xl h-full w-full object-cover"
           />
         ) : (
           <video
             className={`${
-              !stream ? "hidden" : " "
-            } rounded-xl h-[150px] w-[260px] object-cover`}
+              stream ? " " : "hidden"
+            } rounded-xl h-full w-full object-cover`}
             ref={videoRef}
             autoPlay
             muted
-            style={{ objectFit: "cover" }}
+            style={{ transform: `scale(${zoom})` }}
           />
         )}
       </div>
       {stream && (
-        <button
-          className="border-[4px] border-white rounded-full px-2 py-2"
-          onClick={closeCamera}
-          disabled={!stream && capturedImage}>
-          <FiCameraOff color="white" size={30} />
-        </button>
+        <div className="flex items-center gap-2">
+          <label htmlFor="zoom" className="text-white font-semibold">
+            <MdOutlineZoomInMap color="white" size={30} />
+          </label>
+          <input
+            id="zoom"
+            type="range"
+            min="1"
+            max="3"
+            step="0.1"
+            value={zoom}
+            onChange={handleZoomChange}
+            className="w-24"
+          />
+          <button
+            className="border-[4px] border-white rounded-full px-2 py-2 ml-2"
+            onClick={closeCamera}
+            disabled={!stream && capturedImage}>
+            <FiCameraOff color="white" size={30} />
+          </button>
+        </div>
       )}
       {!stream && (
         <button
@@ -202,7 +237,7 @@ function PlantAnalyzer() {
         )}
         {error && (
           <p className="text-red-500 mt-2 px-2">
-            Unable to generate response: {error}
+            tap retry button, or refresh your page: {error}
           </p>
         )}
       </div>
