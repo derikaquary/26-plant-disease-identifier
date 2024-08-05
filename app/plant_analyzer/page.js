@@ -14,6 +14,7 @@ import { IoRadioButtonOnOutline } from "react-icons/io5";
 import { FiCameraOff } from "react-icons/fi";
 import { IoRefreshCircleOutline } from "react-icons/io5";
 import { MdOutlineZoomInMap } from "react-icons/md";
+import { MdOutlineFileUpload } from "react-icons/md";
 import Spinner from "../_components/Spinner";
 import Navigation from "../_components/Navigation";
 
@@ -26,6 +27,7 @@ function PlantAnalyzer() {
   const [loading, setLoading] = useState(false);
   const [zoom, setZoom] = useState(1);
   const videoRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
@@ -103,47 +105,7 @@ function PlantAnalyzer() {
         reader.readAsDataURL(imageBlob);
       });
 
-      const contents = [
-        {
-          role: "user",
-          parts: [
-            { inline_data: { mime_type: "image/jpeg", data: imageBase64 } },
-            {
-              text: "Analyze this plant and provide its name, potential issues, and solutions. The solution must be precise, if there is a lack of nutritions, the nutritions must be mentioned, which mineral is lacking. Be spesific, do not try to say it is not possible to determine, just give your best guest. Do not ask back to the user, this is a one way app. At the end, provide a tag saying: use the info with caution",
-            },
-          ],
-        },
-      ];
-
-      const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
-        safetySettings: [
-          {
-            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-          },
-        ],
-      });
-
-      try {
-        setLoading(true);
-        const result = await model.generateContentStream({ contents });
-
-        let buffer = [];
-        let md = new MarkdownIt();
-        for await (let response of result.stream) {
-          buffer.push(response.text());
-          setPlantInfo(md.render(buffer.join("")));
-        }
-      } catch (apiError) {
-        console.error("Error analyzing image:", apiError);
-        setPlantInfo(
-          `<p class="text-red-500">Something went wrong. Please tap the reset button and try again.</p>`
-        );
-      } finally {
-        setLoading(false);
-      }
+      analyzeImage(imageBase64);
     } catch (error) {
       console.error("Error capturing video stream:", error);
       setError(`Capture Error: ${error.message}`);
@@ -151,6 +113,68 @@ function PlantAnalyzer() {
       if (videoRef.current && stream) {
         closeCamera();
       }
+    }
+  }
+
+  async function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const imageBase64 = reader.result.split(",")[1];
+        setCapturedImage(reader.result);
+        analyzeImage(imageBase64);
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setError(`Upload Error: ${error.message}`);
+    }
+  }
+
+  async function analyzeImage(imageBase64) {
+    const contents = [
+      {
+        role: "user",
+        parts: [
+          { inline_data: { mime_type: "image/jpeg", data: imageBase64 } },
+          {
+            text: "Analyze this plant and provide its name, potential issues, and solutions. The solution must be precise, if there is a lack of nutritions, the nutritions must be mentioned, which mineral is lacking. Be specific, do not try to say it is not possible to determine, just give your best guess. Do not ask back to the user, this is a one way app. At the end, provide a tag saying: use the info with caution",
+          },
+        ],
+      },
+    ];
+
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      safetySettings: [
+        {
+          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+          threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+        },
+      ],
+    });
+
+    try {
+      setLoading(true);
+      const result = await model.generateContentStream({ contents });
+
+      let buffer = [];
+      let md = new MarkdownIt();
+      for await (let response of result.stream) {
+        buffer.push(response.text());
+        setPlantInfo(md.render(buffer.join("")));
+      }
+    } catch (apiError) {
+      console.error("Error analyzing image:", apiError);
+      setPlantInfo(
+        `<p class="text-red-500">Something went wrong. Please tap the reset button and try again.</p>`
+      );
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -221,6 +245,18 @@ function PlantAnalyzer() {
           <CiCamera color="white" size={30} />
         </button>
       )}
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileUpload}
+        ref={fileInputRef}
+        className="hidden"
+      />
+      <button
+        className="border-[4px] border-white rounded-full px-2 py-2"
+        onClick={() => fileInputRef.current.click()}>
+        <MdOutlineFileUpload color="white" size={30} />
+      </button>
       <div className="h-[250px] bg-black/10 backdrop-blur-xl w-full flex flex-col items-center justify-center shadow-md px-3">
         {loading ? (
           <Spinner />
