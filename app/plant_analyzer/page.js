@@ -6,9 +6,7 @@ import {
   HarmBlockThreshold,
   HarmCategory,
 } from "@google/generative-ai";
-import Base64 from "base64-js";
 import MarkdownIt from "markdown-it";
-import Image from "next/image";
 import { CiCamera } from "react-icons/ci";
 import { IoRadioButtonOnOutline } from "react-icons/io5";
 import { FiCameraOff } from "react-icons/fi";
@@ -269,8 +267,8 @@ function PlantAnalyzer() {
           />
         ) : (
           <p className="text-[20px] text-white">
-            Please tap camera icon or upload your own plant photo. Tap refresh
-            button to take another image
+            Please tap the camera icon or upload your own plant photo. Tap
+            refresh button to take another image
           </p>
         )}
       </div>
