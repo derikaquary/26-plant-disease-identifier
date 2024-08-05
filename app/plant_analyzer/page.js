@@ -55,7 +55,9 @@ function PlantAnalyzer() {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
-      videoRef.current.src = "";
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null; // Ensure the video src is cleared
     }
   }
 
@@ -110,9 +112,7 @@ function PlantAnalyzer() {
       console.error("Error capturing video stream:", error);
       setError(`Capture Error: ${error.message}`);
     } finally {
-      if (videoRef.current && stream) {
-        closeCamera();
-      }
+      closeCamera(); // Ensure the camera is closed after capture
     }
   }
 
