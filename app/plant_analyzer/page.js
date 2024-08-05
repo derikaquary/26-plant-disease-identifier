@@ -195,7 +195,7 @@ function PlantAnalyzer() {
 
   return (
     <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center">
-      <div className="relative w-[260px] h-[150px] overflow-hidden rounded-xl mt-2">
+      <div className="relative w-[320px] h-[180px] overflow-hidden rounded-xl mt-2">
         {capturedImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -215,48 +215,50 @@ function PlantAnalyzer() {
           />
         )}
       </div>
-      {stream && (
-        <div className="flex items-center gap-2">
-          <label htmlFor="zoom" className="text-white font-semibold">
-            <MdOutlineZoomInMap color="white" size={30} />
-          </label>
-          <input
-            id="zoom"
-            type="range"
-            min="1"
-            max="3"
-            step="0.1"
-            value={zoom}
-            onChange={handleZoomChange}
-            className="w-24"
-          />
-          <button
-            className="border-[4px] border-white rounded-full px-2 py-2 ml-2"
-            onClick={closeCamera}
-            disabled={!stream && capturedImage}>
-            <FiCameraOff color="white" size={30} />
-          </button>
-        </div>
-      )}
-      {!stream && (
+      <div className="flex items-center gap-2">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileUpload}
+          ref={fileInputRef}
+          className="hidden"
+        />
         <button
           className="border-[4px] border-white rounded-full px-2 py-2"
-          onClick={openCamera}>
-          <CiCamera color="white" size={30} />
+          onClick={() => fileInputRef.current.click()}>
+          <MdOutlineFileUpload color="white" size={30} />
         </button>
-      )}
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileUpload}
-        ref={fileInputRef}
-        className="hidden"
-      />
-      <button
-        className="border-[4px] border-white rounded-full px-2 py-2"
-        onClick={() => fileInputRef.current.click()}>
-        <MdOutlineFileUpload color="white" size={30} />
-      </button>
+        {!stream && (
+          <button
+            className="border-[4px] border-white rounded-full px-2 py-2"
+            onClick={openCamera}>
+            <CiCamera color="white" size={30} />
+          </button>
+        )}
+        {stream && (
+          <div className="flex items-center gap-2">
+            <label htmlFor="zoom" className="text-white font-semibold">
+              <MdOutlineZoomInMap color="white" size={30} />
+            </label>
+            <input
+              id="zoom"
+              type="range"
+              min="1"
+              max="3"
+              step="0.1"
+              value={zoom}
+              onChange={handleZoomChange}
+              className="w-24"
+            />
+            <button
+              className="border-[4px] border-white rounded-full px-2 py-2 ml-2"
+              onClick={closeCamera}
+              disabled={!stream && capturedImage}>
+              <FiCameraOff color="white" size={30} />
+            </button>
+          </div>
+        )}
+      </div>
       <div className="h-[250px] bg-black/10 backdrop-blur-xl w-full flex flex-col items-center justify-center shadow-md px-3">
         {loading ? (
           <Spinner />
@@ -266,23 +268,25 @@ function PlantAnalyzer() {
             dangerouslySetInnerHTML={{ __html: plantInfo }}
           />
         ) : (
-          <p className="text-[20px] text-white ">
-            Tap the camera icon above to open the camera, if error tap refresh.
-            Then start identify your plant disease...
-          </p>
-        )}
-        {error && (
-          <p className="text-red-500 mt-2 px-2">
-            tap retry button, or refresh your page: {error}
+          <p className="text-[20px] text-white">
+            Please tap camera icon or upload your own plant photo. Tap refresh
+            button to take another image
           </p>
         )}
       </div>
-      <button onClick={handleRetake} disabled={!capturedImage}>
-        <IoRefreshCircleOutline size={60} color="white" />
-      </button>
-      <button onClick={handleCapture} disabled={!stream}>
-        <IoRadioButtonOnOutline color="white" size={80} />
-      </button>
+      {error && <div className="text-red-500 text-center mt-2">{error}</div>}
+      <div className="flex items-center gap-2">
+        {capturedImage && (
+          <button onClick={handleRetake}>
+            <IoRefreshCircleOutline color="white" size={70} />
+          </button>
+        )}
+        {stream && (
+          <button onClick={handleCapture} disabled={loading}>
+            <IoRadioButtonOnOutline color="white" size={70} />
+          </button>
+        )}
+      </div>
       <Navigation />
     </div>
   );
