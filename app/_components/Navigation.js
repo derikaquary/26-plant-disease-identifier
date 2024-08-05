@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { PiDotsThreeCircleVerticalThin } from "react-icons/pi";
 import { MdHome } from "react-icons/md";
@@ -10,6 +11,7 @@ import { FaLeaf } from "react-icons/fa";
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -29,6 +31,10 @@ function Navigation() {
     };
   }, [isOpen]);
 
+  const getIconColor = (path) => {
+    return pathname === path ? "text-white" : "text-gray-400";
+  };
+
   return (
     <div
       ref={navRef}
@@ -36,13 +42,22 @@ function Navigation() {
       {isOpen && (
         <div className="rounded-xl bg-white/20 backdrop-blur-md w-[50px] flex flex-col gap-3 items-center justify-center px-3 py-3">
           <Link href="/">
-            <MdHome color="white" size={40} />
+            <MdHome
+              className={`transition-colors ${getIconColor("/")}`}
+              size={40}
+            />
           </Link>
           <Link href="/plant_analyzer">
-            <FaLeaf color="white" size={40} />
+            <FaLeaf
+              className={`transition-colors ${getIconColor("/plant_analyzer")}`}
+              size={40}
+            />
           </Link>
           <Link href="/about">
-            <FaInfoCircle color="white" size={40} />
+            <FaInfoCircle
+              className={`transition-colors ${getIconColor("/about")}`}
+              size={40}
+            />
           </Link>
         </div>
       )}

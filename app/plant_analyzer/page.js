@@ -35,19 +35,30 @@ function PlantAnalyzer() {
       setError("Please tap the reset button.");
       return;
     }
-
+  
+    // Clear the existing source
+    video.srcObject = null;
+  
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
       });
       video.srcObject = localStream;
-      await video.play();
-      setStream(localStream);
+      video.onloadedmetadata = async () => {
+        try {
+          await video.play();
+          setStream(localStream);
+        } catch (playError) {
+          console.error("Error playing video stream:", playError);
+          setError(`Play Error: ${playError.message}`);
+        }
+      };
     } catch (error) {
       console.error("Error accessing video stream:", error);
       setError(`Access Error: ${error.message}`);
     }
   }
+  
 
   async function closeCamera() {
     if (stream) {
@@ -271,8 +282,9 @@ function PlantAnalyzer() {
             refresh button to take another image
           </p>
         )}
+        {error && <div className="text-red-500 text-center mt-2">{error}</div>}
       </div>
-      {error && <div className="text-red-500 text-center mt-2">{error}</div>}
+
       <div className="flex items-center gap-2">
         {capturedImage && (
           <button onClick={handleRetake}>
