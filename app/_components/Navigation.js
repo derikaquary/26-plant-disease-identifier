@@ -54,17 +54,17 @@ function Navigation() {
               size={40}
             />
           </Link>
-          <Link href="/about">
-            <FaInfoCircle
-              className={`transition-colors ${getIconColor("/about")}`}
-              size={40}
-            />
-          </Link>
           <Link href="/article_and_tips">
             <RiArticleLine
               className={`transition-colors ${getIconColor(
                 "/article_and_tips"
               )}`}
+              size={40}
+            />
+          </Link>
+          <Link href="/about">
+            <FaInfoCircle
+              className={`transition-colors ${getIconColor("/about")}`}
               size={40}
             />
           </Link>
