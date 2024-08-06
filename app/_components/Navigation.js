@@ -7,6 +7,7 @@ import { PiDotsThreeCircleVerticalThin } from "react-icons/pi";
 import { MdHome } from "react-icons/md";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaLeaf } from "react-icons/fa";
+import { RiArticleLine } from "react-icons/ri";
 
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,6 +57,14 @@ function Navigation() {
           <Link href="/about">
             <FaInfoCircle
               className={`transition-colors ${getIconColor("/about")}`}
+              size={40}
+            />
+          </Link>
+          <Link href="/article_and_tips">
+            <RiArticleLine
+              className={`transition-colors ${getIconColor(
+                "/article_and_tips"
+              )}`}
               size={40}
             />
           </Link>

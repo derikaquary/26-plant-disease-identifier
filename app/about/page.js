@@ -2,7 +2,7 @@ import Navigation from "@/app/_components/Navigation.js";
 import ProfileCard from "../_components/ProfileCard";
 function page() {
   return (
-    <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center ">
+    <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-3xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center ">
       <ProfileCard type="derik" name="Derik Aquary" role="Creator" />
       <div className="bg-black/30 rounded-lg w-[300px] h-[190px] overflow-auto px-3 py-2">
         <p className="text-white text-2xl">

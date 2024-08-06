@@ -35,10 +35,10 @@ function PlantAnalyzer() {
       setError("Please tap the reset button.");
       return;
     }
-  
+
     // Clear the existing source
     video.srcObject = null;
-  
+
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
@@ -58,7 +58,6 @@ function PlantAnalyzer() {
       setError(`Access Error: ${error.message}`);
     }
   }
-  
 
   async function closeCamera() {
     if (stream) {
@@ -203,7 +202,7 @@ function PlantAnalyzer() {
   };
 
   return (
-    <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-2xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center">
+    <div className="absolute bottom-[25px] left-[25px] right-[25px] top-[25px] rounded-3xl border-r-2 border-t-2 border-white/40 bg-white/20 shadow-2xl flex flex-col gap-3 justify-center items-center">
       <div className="relative w-[320px] h-[180px] overflow-hidden rounded-xl mt-2">
         {capturedImage ? (
           // eslint-disable-next-line @next/next/no-img-element
