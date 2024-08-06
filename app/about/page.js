@@ -9,13 +9,15 @@ function page() {
           Hello, my name is Derik. I am pleased to introduce my latest app,
           designed to assist you in identifying plant diseases and providing
           useful solutions. While I strive for accuracy, please note that the AI
-          may occasionally make errors. And a short story about me, throughout
-          my career, I have developed numerous websites, including a cabin room
-          management system, a movie selection platform, and a glassmorphism
-          website. These projects have significantly enhanced my expertise in
-          Next.js, React.js, Tailwind CSS, React Native, JavaScript, HTML, and
-          CSS. I hope you find my work beneficial and appreciate the effort that
-          has gone into creating this app.
+          may occasionally make errors. A bit about me: Throughout my career, I
+          have developed numerous websites, including a cabin room management
+          system, a movie selection platform, and a glassmorphism website. These
+          projects have significantly enhanced my expertise in Next.js,
+          React.js, Tailwind CSS, React Native, JavaScript, HTML, and CSS. You
+          can check out my LinkedIn profile to see my work. I hope you find my
+          app beneficial and appreciate the effort that has gone into creating
+          it. Do not forget to provide feedback on social media to help me
+          improve it to better suit your needs. Enjoy the app!
         </p>
       </div>
       <Navigation />
