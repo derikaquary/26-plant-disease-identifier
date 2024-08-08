@@ -72,7 +72,7 @@ function Navigation() {
       )}
       <PiDotsThreeCircleVerticalThin
         onClick={() => setIsOpen(!isOpen)}
-        size={30}
+        size={40}
         color="white"
       />
     </div>
