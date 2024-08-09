@@ -31,13 +31,16 @@ function PlantAnalyzer() {
 
   async function openCamera() {
     const video = videoRef.current;
+
     if (!video) {
-      setError("Please tap the reset button.");
+      setError("Video element not found. Please tap the reset button.");
       return;
     }
 
-    // Clear the existing source
-    video.srcObject = null;
+    // Check if the stream is already active
+    if (stream) {
+      closeCamera(); // Close the existing stream before opening a new one
+    }
 
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
