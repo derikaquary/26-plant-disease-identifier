@@ -9,7 +9,7 @@ function page() {
         </div>
       </div>
       <p>
-        Plant diseases can be a gardener&#39;;s worst nightmare, leading to
+        Plant diseases can be a gardener&#39;s worst nightmare, leading to
         damaged crops, weakened plants, and even total loss of harvest.
         Understanding the common plant diseases and how to treat them is
         essential for maintaining a healthy garden. Below, we&#39;ll explore
