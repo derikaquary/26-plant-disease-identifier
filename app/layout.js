@@ -1,13 +1,13 @@
-import { Playfair_Display } from "next/font/google";
+import { Lora } from "next/font/google";
 import "./_style/globals.css";
 import Image from "next/image";
 import Script from "next/script"; // Import Script component
 import background from "@/public/background.jpg";
 
-const playfair = Playfair_Display({
+const lora = Lora({
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata = {
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive" // Ensure the script runs after the page is interactive
         />
       </head>
-      <body className={`${playfair.className} relative min-h-screen`}>
+      <body className={`${lora.className} relative min-h-screen`}>
         <div className="absolute inset-0">
           <Image
             src={background}
