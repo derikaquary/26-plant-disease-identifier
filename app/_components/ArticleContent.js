@@ -3,7 +3,7 @@ function ArticleContent({ article }) {
 
   return (
     <div
-      className={`h-[100px] w-[250px] bg-cover bg-center rounded-tr-2xl rounded-br-2xl ${
+      className={`h-[100px] w-[230px] bg-cover bg-center rounded-tr-2xl rounded-br-2xl ${
         source === "tips1"
           ? "bg-tips1"
           : source === "tips2"
