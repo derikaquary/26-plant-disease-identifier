@@ -242,7 +242,8 @@ function PlantAnalyzer() {
         {!stream && (
           <button
             className="border-[4px] border-white rounded-full px-2 py-2"
-            onClick={openCamera}>
+            onClick={openCamera}
+            disabled={!!stream}>
             <CiCamera color="white" size={30} />
           </button>
         )}
