@@ -1,8 +1,8 @@
 function page() {
   return (
     <div className="flex flex-col gap-6 px-2 py-2">
-      <div className="bg-tips3 h-[200px] w-full bg-center bg-cover flex items-end pl-2 rounded-2xl ">
-        <div className="w-full h-full flex items-end bg-black/20 pb-2 px-2">
+      <div className="bg-tips3 h-[200px] w-full bg-center bg-cover flex items-end  rounded-2xl ">
+        <div className="w-full h-full flex items-end bg-black/20 pb-2 px-2 rounded-2xl">
           <h1 className="text-4xl">
             Common Plant Diseases and How to Treat Them
           </h1>
