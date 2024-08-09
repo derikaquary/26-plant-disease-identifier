@@ -10,7 +10,7 @@ function ArticleContent({ article }) {
           ? "bg-tips2"
           : "bg-tips3"
       }`}>
-      <div className="bg-black/30 rounded-bl-2xl rounded-tl-2xl pl-2 text-xl h-full w-full flex justify-end items-end">
+      <div className="bg-black/30 rounded-br-2xl rounded-tr-2xl pl-2 text-xl h-full w-full flex justify-end items-end">
         <p>{title}</p>
       </div>
     </div>
