@@ -34,7 +34,7 @@ function ArticlesAndTips() {
           </Link>
         ))}
       </div>
-      
+      <Navigation />
     </div>
   );
 }
