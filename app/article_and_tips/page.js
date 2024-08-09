@@ -8,18 +8,18 @@ import Link from "next/link";
 function ArticlesAndTips() {
   return (
     <div>
-      <div className="relative h-[270px] w-full mb-6">
+      <div className="relative h-[240px] w-full mb-4">
         <Image
           src={title_image}
           layout="fill"
           objectFit="cover"
           placeholder="blur"
           alt="night sky"
-          className="absolute inset-0 object-cover brightness-100 rounded-tl-xl rounded-tr-xl rounded-br-3xl"
+          className="absolute inset-0 object-cover brightness-100 rounded-tl-xl rounded-tr-xl rounded-bl-3xl"
         />
         <h2 className="absolute bottom-3 left-3 text-5xl">Article and Tips</h2>
       </div>
-      <div className="flex flex-col items-end gap-4">
+      <div className="flex flex-col items-start gap-4">
         {articles.map((article) => (
           <Link
             href={` ${
