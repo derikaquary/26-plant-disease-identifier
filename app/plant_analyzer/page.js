@@ -30,16 +30,15 @@ function PlantAnalyzer() {
   const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
   async function openCamera() {
-    const video = videoRef.current;
-
-    if (!video) {
-      setError("Video element not found. Please tap the reset button.");
+    if (stream) {
+      // Camera is already open, no need to reopen
       return;
     }
 
-    // Check if the stream is already active
-    if (stream) {
-      closeCamera(); // Close the existing stream before opening a new one
+    const video = videoRef.current;
+    if (!video) {
+      setError("Please tap the reset button.");
+      return;
     }
 
     try {
@@ -190,12 +189,13 @@ function PlantAnalyzer() {
   }
 
   async function handleRetake() {
+    await closeCamera(); // Ensure the camera is fully closed before reopening
     setCapturedImage(null);
     setCapturedImageSize(null);
     setPlantInfo(null);
     setError(null);
 
-    // Add a delay before opening the camera again
+    // Add a small delay before reopening the camera
     await new Promise((resolve) => setTimeout(resolve, 100));
     openCamera();
   }
@@ -301,7 +301,6 @@ function PlantAnalyzer() {
         )}
       </div>
       <Navigation />
-      
     </div>
   );
 }
