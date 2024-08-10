@@ -301,6 +301,7 @@ function PlantAnalyzer() {
         )}
       </div>
       <Navigation />
+      
     </div>
   );
 }
