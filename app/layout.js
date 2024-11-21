@@ -28,19 +28,19 @@ export default function RootLayout({ children }) {
       <meta name="keywords" content={metadata.keywords} />
 
       {/* Open Graph Metadata */}
-      <meta property="og:title" content="Calorie Check" />
+      <meta property="og:title" content="Plant Disease Check" />
       <meta
         property="og:description"
-        content="Hi, go ahead and check your meal calorie amount using this app"
+        content="Hi, go ahead and check your plant health using this app"
       />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://food-check.vercel.app" />
+      <meta property="og:url" content="https://plant-check.vercel.app" />
       <meta
         property="og:image"
-        content="https://food-check.vercel.app/vegetables.jpeg"
+        content="https://plant-check.vercel.app/caring_plants.jpeg"
       />
       <meta property="og:locale" content="en_US" />
-      <meta property="og:site_name" content="Calorie Check" />
+      <meta property="og:site_name" content="Plant Disease Check" />
       <head>
         <Script
           async
