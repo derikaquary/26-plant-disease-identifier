@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://plant-check.vercel.app
+
+# Sitemaps
+Sitemap: https://plant-check.vercel.app/sitemap.xml
