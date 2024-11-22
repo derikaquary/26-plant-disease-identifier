@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://your-default-site.com',
+  siteUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://plant-check.vercel.app',
   generateRobotsTxt: true, // Generates robots.txt file
   changefreq: 'weekly', // Optional: Set default change frequency
   priority: 0.7,        // Optional: Set default priority
